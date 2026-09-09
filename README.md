@@ -1,0 +1,1 @@
+1. make the first request to get the news articles

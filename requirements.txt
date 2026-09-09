@@ -1,0 +1,13 @@
+beautifulsoup4
+langchain
+langchain-groq
+pydantic
+requests
+python-dotenv
+beautifulsoup4
+lxml
+googlenewsdecoder
+python-box
+readability-lxml
+openai
+-e .

@@ -1,0 +1,24 @@
+script_model:
+  name: llama-3.3-70b-versatile
+  temperature: 0
+
+audio_model:
+  model: tts-1-hd
+  voice: coral
+  instructions: Speak in a professional tone
+
+image_model:
+  engine : stable-diffusion-xl-1024-v1-0
+  api_host : https://api.stability.ai
+
+video_model:
+  
+
+topics:
+  - "india"
+  - "india+politics"
+  - "global"
+  - "sports"
+  - "economic"
+  - "entertainment"
+
