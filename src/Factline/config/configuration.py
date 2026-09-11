@@ -5,7 +5,7 @@ import datetime
 load_dotenv()
 
 #send to yaml
-CHAT_MODEL = chat_models.init_chat_model(model="llama-3.3-70b-versatile",model_provider="groq",temperature=0)
+CHAT_MODEL = chat_models.init_chat_model(model="openai/gpt-oss-120b",model_provider="groq",temperature=0)
 
 class SystemPrompt():
     def __init__(self):

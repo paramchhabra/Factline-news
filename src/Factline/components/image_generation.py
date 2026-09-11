@@ -10,7 +10,7 @@ class ImageGen:
         self.config = config
 
     def create_bg_img(self):
-        self.config.api_keuy = os.getenv("STABILITY_AI_API")
+        self.config.api_key = os.getenv("STABILITY_AI_API")
         if self.config.api_key is None:
             raise Exception("Missing Stability API key.")
 

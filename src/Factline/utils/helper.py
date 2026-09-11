@@ -63,5 +63,12 @@ def get_topic_data(topic):
     listnews = soup.find_all('item')[:5]
     title_list = [i.find('title').text for i in listnews]
 
-    response = CHAT_MODEL.with_structured_output(NewsQuery).invoke([("system",SystemPrompt.news_prompt(topic)),("user",str(title_list))])
-    return response.query
+    response = CHAT_MODEL.invoke([("system",SystemPrompt.news_prompt(topic)),("user",str(title_list))],response_format={
+        "type": "json_schema",
+        "json_schema": {
+            "name": "news_query",
+            "strict": True,
+            "schema": NewsQuery.model_json_schema()
+        }
+    })
+    return NewsQuery.model_validate_json(response.content).query

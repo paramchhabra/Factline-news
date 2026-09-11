@@ -1,6 +1,7 @@
-from pydantic import BaseModel,field_validator,Field
+from pydantic import BaseModel,field_validator,Field,ConfigDict
 
 class NewsQuery(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     query:str
 
     @field_validator("query")
@@ -17,3 +18,4 @@ class NewsScript(BaseModel):
         tags:list = Field(description="[shorts, [tag2], [tag3],...]")
         script:str = Field(description="Your short script goes here")
         mood:str = Field(description="Your mood description goes here, e.g., 'Speak in a Professional and sad tone'")
+        model_config = ConfigDict(extra="forbid")

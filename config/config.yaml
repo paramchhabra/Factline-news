@@ -8,11 +8,11 @@ audio_model:
   instructions: Speak in a professional tone
 
 image_model:
-  engine : stable-diffusion-xl-1024-v1-0
+  engine_id : stable-diffusion-xl-1024-v1-0
   api_host : https://api.stability.ai
 
 video_model:
-  
+  test: empty
 
 topics:
   - "india"

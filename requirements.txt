@@ -10,4 +10,8 @@ googlenewsdecoder
 python-box
 readability-lxml
 openai
+moviepy
+google-api-python-client
+google
+google-auth-oauthlib
 -e .
