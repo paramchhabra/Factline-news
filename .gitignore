@@ -1,3 +1,8 @@
 /.venv
 /.env
 creds.json
+token_create.py
+token_read.py
+token.pickle
+__pycache__/
+artifacts/

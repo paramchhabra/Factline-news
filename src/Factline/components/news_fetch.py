@@ -18,7 +18,7 @@ class NewsData:
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, 'xml')
-        listnews = soup.find_all('item')[:5]
+        listnews = soup.find_all('item')[:3]
         if not listnews:
             logger.info("No news items found.")
             raise ValueError("No news items found")

@@ -205,11 +205,13 @@ class Pipeline:
         self,
         news_data,
         language,
+        topic,
         image_path = None
     ):
 
         script = self.generate_script(
             news_data,
+            topic,
             language
         )
 
@@ -247,6 +249,7 @@ class Pipeline:
         self.run_language(
             news_data,
             "English",
+            topic,
             image_path
         )
 
@@ -257,5 +260,6 @@ class Pipeline:
         self.run_language(
             news_data,
             "Hindi",
+            topic,
             image_path
         )
