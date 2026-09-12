@@ -104,10 +104,10 @@ class Pipeline:
 
         return audio_path
 
-    def generate_image(self, script, language):
+    def generate_image(self, script):
 
         logger.info(
-            f"Generating {language} image"
+            f"Generating image"
         )
 
         image_config = self.config.image_model
@@ -126,7 +126,7 @@ class Pipeline:
 
         image_path = (
             f"artifacts/images/"
-            f"{self.session_id}_{language.lower()}.png"
+            f"{self.session_id}.png"
         )
 
         with open(image_path, "wb") as image_file:
@@ -204,8 +204,8 @@ class Pipeline:
     def run_language(
         self,
         news_data,
-        image_path,
-        language
+        language,
+        image_path = None
     ):
 
         script = self.generate_script(
@@ -217,6 +217,8 @@ class Pipeline:
             script,
             language
         )
+        if not image_path:
+            image_path = self.generate_image(script)
 
         video_path = self.generate_video(
             audio_path,
@@ -233,27 +235,27 @@ class Pipeline:
         return video_id
 
     def run(self, topic):
-        # One session for BOTH languages
         self.session_id = datetime.datetime.now().strftime(
             "%y%m%d%H%M%S"
         )
 
         # Fetch news ONCE
         news_data = self.fetch_news(topic)
-
-        # Generate image ONCE
-        image_path = self.generate_image(news_data)
+        image_path = None
 
         # English
         self.run_language(
             news_data,
-            image_path,
-            "English"
+            "English",
+            image_path
         )
+
+        if os.path.exists(f"artifacts/images/{self.session_id}.png"):
+            image_path = f"artifacts/images/{self.session_id}.png"
 
         # Hindi
         self.run_language(
             news_data,
-            image_path,
-            "Hindi"
+            "Hindi",
+            image_path
         )

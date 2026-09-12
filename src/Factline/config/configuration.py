@@ -66,7 +66,7 @@ class SystemPrompt():
 
             "script": "[Your short {language} script goes here]",
             "mood": "[Your mood description goes here, e.g., 'Speak in a Professional and sad tone']"
-            "prompt": "[Your prompt for background image generation]"
+            "prompt": "[Your prompt for background image generation, always in english]"
             }}
 
             Guidelines:

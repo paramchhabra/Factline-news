@@ -3,16 +3,35 @@ from googlenewsdecoder import gnewsdecoder
 from bs4 import BeautifulSoup
 import requests
 from Factline.config.models import NewsQuery
-from Factline.config.configuration import SystemPrompt,CHAT_MODEL
+from Factline.config.configuration import SystemPrompt, CHAT_MODEL
 import yaml
 from box import ConfigBox
 
+CONFIG_PATH ="config/config.yaml"
+STATE_PATH = "config/state.yaml"
+
+
 def read_config():
-    with open("config\\config.yaml", "r") as file:
+    with open(CONFIG_PATH, "r") as file:
         config = yaml.safe_load(file)
 
-    config = ConfigBox(config)
-    return config
+    return ConfigBox(config)
+
+
+def read_state():
+    with open(STATE_PATH, "r") as file:
+        state = yaml.safe_load(file)
+
+    return ConfigBox(state)
+
+
+def write_state(state):
+    with open(STATE_PATH, "w") as file:
+        yaml.safe_dump(
+            dict(state),
+            file,
+            sort_keys=False
+        )
 
 def get_browser_headers()->dict:
     headers = {
