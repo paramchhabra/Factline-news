@@ -54,6 +54,9 @@ class SystemPrompt():
             In the language {language}.
             The final script should be suitable for a video lasting approximately 60 seconds. Prioritize the information from the articles with the most recent publish date and time.
 
+            Along with the above, write a prompt to generate a background image for this short video, and make it generic. For example, if the news says "Narendra Modi visited the Parliament", just say Old man in his 60s wth white beard visits government building
+            Make sure to make the prompt resemble the news entities as much as possible
+
             You must output your response strictly in the following JSON format:
 
             {{
@@ -63,6 +66,7 @@ class SystemPrompt():
 
             "script": "[Your short {language} script goes here]",
             "mood": "[Your mood description goes here, e.g., 'Speak in a Professional and sad tone']"
+            "prompt": "[Your prompt for background image generation]"
             }}
 
             Guidelines:

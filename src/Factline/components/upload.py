@@ -289,7 +289,7 @@ class Upload:
             description=description,
             tags=tags,
             category_id="25",
-            privacy_status="private"
+            privacy_status="public"
         )
 
         if not video_id:
