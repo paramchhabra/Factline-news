@@ -24,11 +24,14 @@ class NewsData:
             raise ValueError("No news items found")
 
         newslist = []
+        MAX_ARTICLE_CHARS = 40000
 
         for i in listnews:
             title = i.find('title').text
             link = i.find('link').text
             content = extract_article_content(link)
+            if len(content)>MAX_ARTICLE_CHARS:
+                content = content[:MAX_ARTICLE_CHARS] + "\n[Article content truncated]"
             published_on = i.find('pubDate').text
             source = i.find('source').text if i.find('source') else "Unknown"
 
