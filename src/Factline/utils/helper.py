@@ -32,7 +32,6 @@ def read_state():
 
     bucket = client.bucket(BUCKET_NAME)
     blob = bucket.blob(STATE_BLOB_NAME)
-
     return yaml.safe_load(blob.download_as_text())
 
 

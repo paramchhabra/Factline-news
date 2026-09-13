@@ -8,7 +8,7 @@ def main():
     state = read_state()
 
     topics = config.topics
-    topic_index = state.current_topic_index
+    topic_index = state["current_topic_index"]
 
     topic = topics[topic_index]
 
@@ -20,7 +20,7 @@ def main():
         topic_index + 1
     ) % len(topics)
 
-    state.current_topic_index = next_index
+    state["current_topic_index"] = next_index
 
     write_state(state)
 
