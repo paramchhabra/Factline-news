@@ -18,20 +18,38 @@ def read_config():
     return ConfigBox(config)
 
 
+import os
+import yaml
+from google.cloud import storage
+
+
+BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")
+STATE_BLOB_NAME = "state.yaml"
+
+
 def read_state():
-    with open(STATE_PATH, "r") as file:
-        state = yaml.safe_load(file)
+    client = storage.Client()
 
-    return ConfigBox(state)
+    bucket = client.bucket(BUCKET_NAME)
+    blob = bucket.blob(STATE_BLOB_NAME)
+
+    return yaml.safe_load(blob.download_as_text())
 
 
-def write_state(state):
-    with open(STATE_PATH, "w") as file:
-        yaml.safe_dump(
-            dict(state),
-            file,
-            sort_keys=False
-        )
+def write_state(index):
+    client = storage.Client()
+
+    bucket = client.bucket(BUCKET_NAME)
+    blob = bucket.blob(STATE_BLOB_NAME)
+
+    state = {
+        "current_topic_index": index
+    }
+
+    blob.upload_from_string(
+        yaml.safe_dump(state),
+        content_type="application/x-yaml"
+    )
 
 def get_browser_headers()->dict:
     headers = {

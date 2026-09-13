@@ -4,10 +4,8 @@ WORKDIR /app
 
 RUN pip install uv
 
-COPY requirements.txt .
+COPY . .
 
 RUN uv pip install --system -r requirements.txt
-
-COPY . .
 
 CMD ["python", "main.py"]

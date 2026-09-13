@@ -1,0 +1,9 @@
+.git/
+.github/
+
+config/state.yaml
+
+__pycache__/
+
+artifacts/
+logs/

@@ -1,0 +1,75 @@
+name: Deploy Factline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: factline-481208
+  REGION: asia-south1
+  REPOSITORY: factline
+  IMAGE_NAME: factline-news
+  JOB_NAME: factline-job
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+
+      # 1. Download our repository code onto the GitHub Actions runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Authenticate GitHub Actions with Google Cloud using WIF
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: projects/1089879972644/locations/global/workloadIdentityPools/github/providers/github
+          service_account: github-actions@factline-481208.iam.gserviceaccount.com
+
+      # 3. Install Google Cloud CLI
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      # 4. Allow Docker to authenticate with Artifact Registry
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker \
+            ${{ env.REGION }}-docker.pkg.dev \
+            --quiet
+
+      # 5. Recreate .env from GitHub Secret
+      - name: Create environment file
+        run: |
+          printf '%s' '${{ secrets.ENV_FILE }}' > .env
+
+      # 6. Recreate creds.json from GitHub Secret
+      - name: Create Google credentials
+        run: |
+          printf '%s' '${{ secrets.GOOGLE_CREDS_JSON }}' > creds.json
+
+      # 7. Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+
+      # 8. Push Docker image to Artifact Registry
+      - name: Push Docker image
+        run: |
+          docker push \
+            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      # 9. Update Cloud Run Job to use the new image
+      - name: Deploy Cloud Run Job
+        run: |
+          gcloud run jobs update ${{ env.JOB_NAME }} \
+            --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --region=${{ env.REGION }}
