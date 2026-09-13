@@ -12,6 +12,6 @@ readability-lxml
 openai
 moviepy
 google-api-python-client
-google
+google-cloud-storage
 google-auth-oauthlib
 -e .
