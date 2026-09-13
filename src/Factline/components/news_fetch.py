@@ -23,24 +23,32 @@ class NewsData:
             logger.info("No news items found.")
             raise ValueError("No news items found")
 
+        MAX_TOTAL_CHARS = 50000
         newslist = []
-        MAX_ARTICLE_CHARS = 40000
+        total_chars = 0
 
         for i in listnews:
             title = i.find('title').text
             link = i.find('link').text
+
             content = extract_article_content(link)
-            if len(content)>MAX_ARTICLE_CHARS:
-                content = content[:MAX_ARTICLE_CHARS] + "\n[Article content truncated]"
-            published_on = i.find('pubDate').text
-            source = i.find('source').text if i.find('source') else "Unknown"
+
+            remaining = MAX_TOTAL_CHARS - total_chars
+
+            if remaining <= 0:
+                break
+
+            content = content[:remaining]
 
             newslist.append({
                 "Title": title,
                 "Content": content,
-                "Published_On": published_on,
-                "Source": source
+                "Published_On": i.find('pubDate').text,
+                "Source": i.find('source').text if i.find('source') else "Unknown"
             })
+
+            total_chars += len(content)
+
         logger.info("Data Provided")
         return str(newslist)
 
