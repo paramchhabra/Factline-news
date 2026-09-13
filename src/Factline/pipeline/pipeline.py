@@ -150,7 +150,7 @@ class Pipeline:
         video_config.audio = audio_path
         video_config.background_image = image_path
         video_config.logo_image = (
-            "artifacts/images/logo.png"
+            "logo.png"
         )
 
         video_component = VideoGen(
