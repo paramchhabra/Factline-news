@@ -32,7 +32,8 @@ class NewsData:
             link = i.find('link').text
 
             content = extract_article_content(link)
-
+            if not content:
+                continue
             remaining = MAX_TOTAL_CHARS - total_chars
 
             if remaining <= 0:

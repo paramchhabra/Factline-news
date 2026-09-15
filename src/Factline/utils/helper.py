@@ -96,7 +96,7 @@ def get_topic_data(topic):
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, 'xml')
-    listnews = soup.find_all('item')[:5]
+    listnews = soup.find_all('item')[:3]
     title_list = [i.find('title').text for i in listnews]
 
     response = CHAT_MODEL.invoke([("system",SystemPrompt.news_prompt(topic)),("user",str(title_list))],response_format={
