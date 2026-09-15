@@ -23,7 +23,7 @@ class NewsData:
             logger.info("No news items found.")
             raise ValueError("No news items found")
 
-        MAX_TOTAL_CHARS = 50000
+        MAX_TOTAL_CHARS = 30000
         newslist = []
         total_chars = 0
 
