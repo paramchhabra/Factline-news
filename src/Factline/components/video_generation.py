@@ -1,4 +1,4 @@
-import subprocess
+from Factline import logger
 import os
 from dotenv import load_dotenv
 from moviepy import ImageClip, AudioFileClip, TextClip, CompositeVideoClip
@@ -22,8 +22,8 @@ class VideoGen:
 
         for file in required_files:
             if not os.path.exists(file):
-                print(f"Error: {file} not found in current directory")
-                return False
+                logger.exception("%s file not present, video cannot be generated")
+                raise
 
         try:
             audio_clip = AudioFileClip(audio)
@@ -74,5 +74,5 @@ class VideoGen:
             return output_video
 
         except Exception as e:
-            print(f"Error creating video: {e}")
-            return None
+            logger.exception("Failed to create due to the following error : %s",e)
+            raise

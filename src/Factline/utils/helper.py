@@ -6,49 +6,72 @@ from Factline.config.models import NewsQuery
 from Factline.config.configuration import SystemPrompt, CHAT_MODEL
 import yaml
 from box import ConfigBox
+from Factline import logger
+import os
+import yaml
+from google.cloud import storage
 
 CONFIG_PATH ="config/config.yaml"
 STATE_PATH = "config/state.yaml"
 
 
 def read_config():
-    with open(CONFIG_PATH, "r") as file:
-        config = yaml.safe_load(file)
+    logger.info("Reading application configuration")
 
-    return ConfigBox(config)
+    try:
+        with open(CONFIG_PATH, "r") as file:
+            config = yaml.safe_load(file)
 
+        return ConfigBox(config)
 
-import os
-import yaml
-from google.cloud import storage
-
+    except Exception as e:
+        logger.exception("Failed to read application configuration: %s",e)
+        raise
 
 BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")
 STATE_BLOB_NAME = "state.yaml"
 
 
 def read_state():
-    client = storage.Client()
+    logger.info("Reading pipeline state from GCS")
 
-    bucket = client.bucket(BUCKET_NAME)
-    blob = bucket.blob(STATE_BLOB_NAME)
-    return yaml.safe_load(blob.download_as_text())
+    try:
+        client = storage.Client()
 
+        bucket = client.bucket(BUCKET_NAME)
+        blob = bucket.blob(STATE_BLOB_NAME)
+
+        state = yaml.safe_load(
+            blob.download_as_text()
+        )
+
+        logger.info("Pipeline state loaded successfully")
+
+        return state
+
+    except Exception as e:
+        logger.exception("Failed to read pipeline state from GCS: %s",e)
+        raise
 
 def write_state(index):
+
     client = storage.Client()
 
-    bucket = client.bucket(BUCKET_NAME)
-    blob = bucket.blob(STATE_BLOB_NAME)
+    try:    
+        bucket = client.bucket(BUCKET_NAME)
+        blob = bucket.blob(STATE_BLOB_NAME)
 
-    state = {
-        "current_topic_index": index
-    }
+        state = {
+            "current_topic_index": index
+        }
 
-    blob.upload_from_string(
-        yaml.safe_dump(state),
-        content_type="application/x-yaml"
-    )
+        blob.upload_from_string(
+            yaml.safe_dump(state),
+            content_type="application/x-yaml"
+        )
+    except Exception as e:
+        logger.exception("Failed to write state with exception: %s",e)
+        raise
 
 def get_browser_headers()->dict:
     headers = {
@@ -88,23 +111,28 @@ def extract_article_content(url):
         return text_only
 
     except Exception as e:
+        logger.exception("Failed to read content from url %s",url)
         return None
 
 def get_topic_data(topic):
-    url = f"https://news.google.com/rss/search?q=latest+{topic}+news"
-    response = requests.get(url, headers=get_browser_headers(), timeout=10)
-    response.raise_for_status()
+    try:
+        url = f"https://news.google.com/rss/search?q=latest+{topic}+news"
+        response = requests.get(url, headers=get_browser_headers(), timeout=10)
+        response.raise_for_status()
 
-    soup = BeautifulSoup(response.text, 'xml')
-    listnews = soup.find_all('item')[:3]
-    title_list = [i.find('title').text for i in listnews]
+        soup = BeautifulSoup(response.text, 'xml')
+        listnews = soup.find_all('item')[:3]
+        title_list = [i.find('title').text for i in listnews]
 
-    response = CHAT_MODEL.invoke([("system",SystemPrompt.news_prompt(topic)),("user",str(title_list))],response_format={
-        "type": "json_schema",
-        "json_schema": {
-            "name": "news_query",
-            "strict": True,
-            "schema": NewsQuery.model_json_schema()
-        }
-    })
-    return NewsQuery.model_validate_json(response.content).query
+        response = CHAT_MODEL.invoke([("system",SystemPrompt.news_prompt(topic)),("user",str(title_list))],response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "news_query",
+                "strict": True,
+                "schema": NewsQuery.model_json_schema()
+            }
+        })
+        return NewsQuery.model_validate_json(response.content).query
+    except Exception as e:
+        logger.exception("Failed to get topic data with exception : %s",e)
+        raise

@@ -6,53 +6,70 @@ from Factline import logger
 # news_topics = ["india","india+politics", "global", "sports", "economic", "entertainment"]
 
 class NewsData:
-    def __init__(self,config, topic):
+    def __init__(self,config, topic,max_chars):
         self.config = config
         self.topic = topic
+        self.max_chars = max_chars
         
     def get_news_data(self):
-        query = get_topic_data(self.topic)
-        url = f"https://news.google.com/rss/search?q={query}"
+        try:
+            query = get_topic_data(self.topic)
+        except Exception as e:
+            for i in range(3):
+                logger.info("Topic Data retrieval Failed due to the following error: %s, retrying %d",e,i)
+                try: 
+                    query = get_topic_data(self.topic)
+                    break
+                except Exception as e:
+                    logger.info("Attempt %d failed: %s", i + 1, e)
+                    continue
+            else:
+                logger.exception("Topic Data retrieval Failed due to the following error: %s",e)
 
-        response = requests.get(url=url, headers=get_browser_headers())
-        response.raise_for_status()
+        try:
+            url = f"https://news.google.com/rss/search?q={query}"
 
-        soup = BeautifulSoup(response.text, 'xml')
-        listnews = soup.find_all('item')[:3]
-        if not listnews:
-            logger.info("No news items found.")
-            raise ValueError("No news items found")
+            response = requests.get(url=url, headers=get_browser_headers())
+            response.raise_for_status()
 
-        MAX_TOTAL_CHARS = 30000
-        newslist = []
-        total_chars = 0
+            soup = BeautifulSoup(response.text, 'xml')
+            listnews = soup.find_all('item')[:3]
+            if not listnews:
+                logger.info("No news items found.")
+                raise ValueError("No news items found")
 
-        for i in listnews:
-            title = i.find('title').text
-            link = i.find('link').text
+            mc = self.max_chars
+            newslist = []
+            total_chars = 0
 
-            content = extract_article_content(link)
-            if not content:
-                continue
-            remaining = MAX_TOTAL_CHARS - total_chars
+            for i in listnews:
+                title = i.find('title').text
+                link = i.find('link').text
 
-            if remaining <= 0:
-                break
+                content = extract_article_content(link)
+                if not content:
+                    continue
+                remaining = mc - total_chars
 
-            content = content[:remaining]
+                if remaining <= 0:
+                    break
 
-            newslist.append({
-                "Title": title,
-                "Content": content,
-                "Published_On": i.find('pubDate').text,
-                "Source": i.find('source').text if i.find('source') else "Unknown"
-            })
+                content = content[:remaining]
 
-            total_chars += len(content)
+                newslist.append({
+                    "Title": title,
+                    "Content": content,
+                    "Published_On": i.find('pubDate').text,
+                    "Source": i.find('source').text if i.find('source') else "Unknown"
+                })
 
-        logger.info("Data Provided")
-        return str(newslist)
+                total_chars += len(content)
 
+            logger.info("Data Provided")
+            return str(newslist)
+        except Exception as e:
+            logger.exception("Failed to extract article content due to following error: %s",e)
+            raise
 
-    
+        
 

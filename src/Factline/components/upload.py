@@ -94,7 +94,7 @@ class Upload:
             return True
 
         except Exception as e:
-            logger.error(
+            logger.exception(
                 "Failed to initialize YouTube API: %s",
                 e
             )
@@ -156,18 +156,18 @@ class Upload:
             return video_id
 
         except HttpError as e:
-            logger.error(
+            logger.exception(
                 "YouTube API error during upload: %s",
                 e
             )
-            return None
+            raise
 
         except Exception as e:
-            logger.error(
+            logger.exception(
                 "Upload failed: %s",
                 e
             )
-            return None
+            raise
 
     def _add_to_playlist(self, video_id, language):
         if not video_id:
@@ -230,43 +230,17 @@ class Upload:
             return None
 
     def upload(self, data, video_file, language):
-        """
-        Upload a video to YouTube and add it to the
-        appropriate language playlist.
 
-        Parameters
-        ----------
-        data : dict
-            Video metadata containing:
-            - video_title
-            - description
-            - tags
-
-        video_file : str
-            Path to the generated video.
-
-        language : str
-            Video language, e.g. "English" or "Hindi".
-
-        Returns
-        -------
-        str or None
-            YouTube video ID if successful.
-        """
-
-        # Check video exists
         if not os.path.exists(video_file):
-            logger.error(
+            logger.exception(
                 "Video file not found: %s",
                 video_file
             )
-            return None
+            raise
 
-        # Initialize YouTube API
         if not self._initialize_youtube():
             return None
 
-        # Extract metadata
         title = data.get(
             "video_title",
             "Untitled"
@@ -282,7 +256,6 @@ class Upload:
             []
         )
 
-        # Upload video
         video_id = self._upload_video(
             file_path=video_file,
             title=title,
@@ -295,7 +268,6 @@ class Upload:
         if not video_id:
             return None
 
-        # Add uploaded video to playlist
         self._add_to_playlist(
             video_id,
             language

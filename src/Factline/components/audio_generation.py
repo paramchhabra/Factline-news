@@ -20,5 +20,7 @@ class AudioGen:
             return response
         except OpenAIError as e:
             logger.error(f"OpenAI TTS API error: {e}")
+            raise OpenAIError
         except Exception as e:
             logger.error(f"Unexpected error in generate_speech: {e}")
+            raise
