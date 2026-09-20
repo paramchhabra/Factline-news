@@ -205,9 +205,6 @@ def extract_article_content(url):
         newurl = gnewsdecoder(url, interval=10)
         decoded_url = newurl.get("decoded_url")
 
-        if not decoded_url:
-            raise ValueError("Decoded URL not found")
-
         response = requests.get(
             decoded_url,
             headers=get_browser_headers(),
