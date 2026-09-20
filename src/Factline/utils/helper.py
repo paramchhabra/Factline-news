@@ -10,6 +10,7 @@ from Factline import logger
 import os
 import yaml
 from google.cloud import storage
+import json
 
 CONFIG_PATH ="config/config.yaml"
 STATE_PATH = "config/state.yaml"
@@ -53,24 +54,135 @@ def read_state():
         logger.exception("Failed to read pipeline state from GCS: %s",e)
         raise
 
-def write_state(index):
+def write_state(state):
 
-    client = storage.Client()
+    logger.info("Writing pipeline state to GCS")
 
-    try:    
+    try:
+        client = storage.Client()
+
         bucket = client.bucket(BUCKET_NAME)
         blob = bucket.blob(STATE_BLOB_NAME)
-
-        state = {
-            "current_topic_index": index
-        }
 
         blob.upload_from_string(
             yaml.safe_dump(state),
             content_type="application/x-yaml"
         )
+
+        logger.info(
+            "Pipeline state written successfully: %s",
+            state
+        )
+
     except Exception as e:
-        logger.exception("Failed to write state with exception: %s",e)
+        logger.exception(
+            "Failed to write pipeline state: %s",
+            e
+        )
+        raise
+
+def upload_artifact(local_path, blob_path):
+    logger.info(
+        "Uploading artifact to GCS: %s",
+        blob_path
+    )
+
+    try:
+        client = storage.Client()
+
+        bucket = client.bucket(BUCKET_NAME)
+        blob = bucket.blob(blob_path)
+
+        blob.upload_from_filename(local_path)
+
+        logger.info(
+            "Artifact uploaded successfully: %s",
+            blob_path
+        )
+
+    except Exception as e:
+        logger.exception(
+            "Failed to upload artifact %s: %s",
+            blob_path,
+            e
+        )
+        raise
+
+
+def download_artifact(blob_path, local_path):
+    logger.info(
+        "Downloading artifact from GCS: %s",
+        blob_path
+    )
+
+    try:
+        client = storage.Client()
+
+        bucket = client.bucket(BUCKET_NAME)
+        blob = bucket.blob(blob_path)
+
+        blob.download_to_filename(local_path)
+
+        logger.info(
+            "Artifact downloaded successfully: %s",
+            blob_path
+        )
+
+    except Exception as e:
+        logger.exception(
+            "Failed to download artifact %s: %s",
+            blob_path,
+            e
+        )
+        raise
+
+def save_script(script, session_id, language):
+    local_path = f"artifacts/{session_id}_{language.lower()}_script.json"
+    blob_path = f"runs/{session_id}/{language.lower()}/script.json"
+
+    try:
+        with open(local_path, "w") as file:
+            json.dump(dict(script), file)
+
+        upload_artifact(local_path, blob_path)
+
+        logger.info(
+            "%s script saved successfully",
+            language
+        )
+
+    except Exception as e:
+        logger.exception(
+            "Failed to save %s script: %s",
+            language,
+            e
+        )
+        raise
+
+
+def load_script(session_id, language):
+    local_path = f"artifacts/{session_id}_{language.lower()}_script.json"
+    blob_path = f"runs/{session_id}/{language.lower()}/script.json"
+
+    try:
+        download_artifact(blob_path, local_path)
+
+        with open(local_path, "r") as file:
+            script = json.load(file)
+
+        logger.info(
+            "%s script loaded successfully",
+            language
+        )
+
+        return ConfigBox(script)
+
+    except Exception as e:
+        logger.exception(
+            "Failed to load %s script: %s",
+            language,
+            e
+        )
         raise
 
 def get_browser_headers()->dict:

@@ -2,6 +2,8 @@ script_model:
   name: llama-3.3-70b-versatile
   temperature: 0
 
+max_chars: 30000
+
 audio_model:
   model: tts-1-hd
   voice: coral

@@ -66,7 +66,7 @@ class NewsData:
                 total_chars += len(content)
 
             logger.info("Data Provided")
-            return str(newslist)
+            return newslist
         except Exception as e:
             logger.exception("Failed to extract article content due to following error: %s",e)
             raise
