@@ -220,7 +220,7 @@ def extract_article_content(url):
         return text_only
 
     except Exception as e:
-        logger.exception("Failed to read content from url %s",url)
+        logger.exception("Failed to read content with exception %s, from url %s",e,url)
         return None
 
 def get_topic_data(topic):
