@@ -58,7 +58,7 @@ def main():
 
     state["current_topic_index"] = next_index
     state["session_id"] = None
-    state["stage"] = "complete"
+    state["stage"] = None
 
     write_state(state)
 
