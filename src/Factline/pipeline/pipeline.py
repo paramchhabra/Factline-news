@@ -120,7 +120,7 @@ class Pipeline:
         script_config = ConfigBox({
             "topic": topic,
             "language": language,
-            "transcript": news_data[:22000]
+            "transcript": str(news_data)[:22000]
         })
 
         script_component = ScriptGen(
