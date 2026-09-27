@@ -2,8 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from Factline.utils.helper import get_browser_headers,extract_article_content,get_topic_data
 from Factline import logger
-# To be shifted to YAML
-# news_topics = ["india","india+politics", "global", "sports", "economic", "entertainment"]
 
 class NewsData:
     def __init__(self,config, topic,max_chars):

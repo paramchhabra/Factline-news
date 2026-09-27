@@ -13,7 +13,6 @@ from google.cloud import storage
 import json
 
 CONFIG_PATH ="config/config.yaml"
-STATE_PATH = "config/state.yaml"
 
 
 def read_config():
@@ -81,15 +80,24 @@ def write_state(state):
         )
         raise
 
-def upload_artifact(local_path, blob_path):
-    logger.info(
-        "Uploading artifact to GCS: %s",
-        blob_path
-    )
+def upload_artifact(data, local_path, blob_path):
+    logger.info("Uploading artifact to GCS: %s", blob_path)
 
     try:
-        client = storage.Client()
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
 
+        if data is not None:
+            if isinstance(data, bytes):
+                with open(local_path, "wb") as file:
+                    file.write(data)
+            else:
+                with open(local_path, "w") as file:
+                    json.dump(
+                        data.model_dump() if hasattr(data, "model_dump") else data,
+                        file
+                    )
+
+        client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
         blob = bucket.blob(blob_path)
 
@@ -110,23 +118,27 @@ def upload_artifact(local_path, blob_path):
 
 
 def download_artifact(blob_path, local_path):
-    logger.info(
-        "Downloading artifact from GCS: %s",
-        blob_path
-    )
+    logger.info("Downloading artifact from GCS: %s", blob_path)
 
     try:
-        client = storage.Client()
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
 
+        client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
         blob = bucket.blob(blob_path)
 
         blob.download_to_filename(local_path)
 
+        if local_path.endswith(".json"):
+            with open(local_path, "r") as file:
+                return ConfigBox(json.load(file))
+
         logger.info(
             "Artifact downloaded successfully: %s",
             blob_path
         )
+
+        return local_path
 
     except Exception as e:
         logger.exception(
@@ -136,54 +148,6 @@ def download_artifact(blob_path, local_path):
         )
         raise
 
-def save_script(script, session_id, language):
-    local_path = f"artifacts/{session_id}_{language.lower()}_script.json"
-    blob_path = f"runs/{session_id}/{language.lower()}/script.json"
-
-    try:
-        with open(local_path, "w") as file:
-            json.dump(dict(script), file)
-
-        upload_artifact(local_path, blob_path)
-
-        logger.info(
-            "%s script saved successfully",
-            language
-        )
-
-    except Exception as e:
-        logger.exception(
-            "Failed to save %s script: %s",
-            language,
-            e
-        )
-        raise
-
-
-def load_script(session_id, language):
-    local_path = f"artifacts/{session_id}_{language.lower()}_script.json"
-    blob_path = f"runs/{session_id}/{language.lower()}/script.json"
-
-    try:
-        download_artifact(blob_path, local_path)
-
-        with open(local_path, "r") as file:
-            script = json.load(file)
-
-        logger.info(
-            "%s script loaded successfully",
-            language
-        )
-
-        return ConfigBox(script)
-
-    except Exception as e:
-        logger.exception(
-            "Failed to load %s script: %s",
-            language,
-            e
-        )
-        raise
 
 def get_browser_headers()->dict:
     headers = {

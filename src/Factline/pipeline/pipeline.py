@@ -8,7 +8,7 @@ from Factline.components.audio_generation import AudioGen
 from Factline.components.image_generation import ImageGen
 from Factline.components.video_generation import VideoGen
 from Factline.components.upload import Upload
-from Factline.utils.helper import read_config,upload_artifact,download_artifact,save_script,load_script,write_state
+from Factline.utils.helper import read_config,upload_artifact,download_artifact,write_state
 from Factline import logger
 
 
@@ -18,13 +18,7 @@ class Pipeline:
 
     def __init__(self):
 
-        # Load configuration
         self.config = read_config()
-
-        # Generate unique session ID for this pipeline object
-        self.session_id = datetime.datetime.now().strftime(
-            "%y%m%d%H%M%S"
-        )
 
     def retry_operation(self, operation, operation_name):
 
@@ -44,31 +38,7 @@ class Pipeline:
 
                 if attempt == self.MAX_RETRIES:
                     raise
-    def save_news(self, news_data):
-        local_path = f"artifacts/{self.session_id}_news.json"
-        blob_path = f"runs/{self.session_id}/news.json"
-
-        with open(local_path, "w") as file:
-            json.dump(news_data, file)
-
-        self.retry_operation(
-            lambda: upload_artifact(local_path, blob_path),
-            "Uploading news artifact"
-        )
-
-
-    def load_news(self):
-        local_path = f"artifacts/{self.session_id}_news.json"
-        blob_path = f"runs/{self.session_id}/news.json"
-
-        self.retry_operation(
-            lambda: download_artifact(blob_path, local_path),
-            "Downloading news artifact"
-        )
-
-        with open(local_path, "r") as file:
-            return json.load(file)
-        
+      
     def fetch_news(self, topic):
         logger.info(f"Fetching news for topic: {topic}")
 
@@ -274,6 +244,24 @@ class Pipeline:
 
         stage = state.get("stage")
 
+        stage_order = [
+            "news",
+            "english_script",
+            "english_audio",
+            "image",
+            "english_video",
+            "english_upload",
+            "hindi_script",
+            "hindi_audio",
+            "hindi_video",
+            "hindi_upload"
+        ]
+
+        if stage and stage != "complete":
+            completed_stages = stage_order[:stage_order.index(stage) + 1]
+        else:
+            completed_stages = []
+
         logger.info(
             "Starting pipeline | topic=%s | session_id=%s | stage=%s",
             topic,
@@ -281,34 +269,40 @@ class Pipeline:
             stage
         )
 
-        if stage is None:
-
+        if "news" not in completed_stages:
             logger.info("News stage not completed. Fetching news.")
 
             news_data = self.fetch_news(topic)
 
+            news_path = f"artifacts/{self.session_id}_news.json"
+
             self.retry_operation(
-                lambda: self.save_news(news_data),
-                "Saving news artifact"
+                lambda: upload_artifact(
+                    news_data,
+                    news_path,
+                    f"runs/{self.session_id}/news.json"
+                ),
+                "Uploading news artifact"
             )
 
             state["stage"] = "news"
-            stage = "news"
-
+            completed_stages.append("news")
             write_state(state)
 
         else:
-
             logger.info("News already completed. Loading news.")
 
+            news_path = f"artifacts/{self.session_id}_news.json"
+
             news_data = self.retry_operation(
-                self.load_news,
-                "Loading news artifact"
+                lambda: download_artifact(
+                    f"runs/{self.session_id}/news.json",
+                    news_path
+                ),
+                "Downloading news artifact"
             )
 
-
-        if stage in (None, "news"):
-
+        if "english_script" not in completed_stages:
             logger.info("English script not completed. Generating script.")
 
             script = self.retry_operation(
@@ -320,37 +314,37 @@ class Pipeline:
                 "English script generation"
             )
 
+            script_path = f"artifacts/{self.session_id}_english_script.json"
+
             self.retry_operation(
-                lambda: save_script(
-                    script,
-                    self.session_id,
-                    "English"
+                lambda: upload_artifact(
+                    dict(script),
+                    script_path,
+                    f"runs/{self.session_id}/english/script.json"
                 ),
-                "Saving English script"
+                "Uploading English script"
             )
 
             state["stage"] = "english_script"
-            stage = "english_script"
-
+            completed_stages.append("english_script")
             write_state(state)
 
         else:
+            logger.info("English script already completed. Loading script.")
 
-            logger.info(
-                "English script already completed. Loading script."
+            script_path = f"artifacts/{self.session_id}_english_script.json"
+
+            script = ConfigBox(
+                self.retry_operation(
+                    lambda: download_artifact(
+                        f"runs/{self.session_id}/english/script.json",
+                        script_path
+                    ),
+                    "Downloading English script"
+                )
             )
 
-            script = self.retry_operation(
-                lambda: load_script(
-                    self.session_id,
-                    "English"
-                ),
-                "Loading English script"
-            )
-
-
-        if stage in (None, "news", "english_script"):
-
+        if "english_audio" not in completed_stages:
             logger.info("English audio not completed. Generating audio.")
 
             audio_path = self.retry_operation(
@@ -363,6 +357,7 @@ class Pipeline:
 
             self.retry_operation(
                 lambda: upload_artifact(
+                    None,
                     audio_path,
                     f"runs/{self.session_id}/english/audio.mp3"
                 ),
@@ -370,19 +365,13 @@ class Pipeline:
             )
 
             state["stage"] = "english_audio"
-            stage = "english_audio"
-
+            completed_stages.append("english_audio")
             write_state(state)
 
         else:
+            logger.info("English audio already completed. Downloading audio.")
 
-            logger.info(
-                "English audio already completed. Downloading audio."
-            )
-
-            audio_path = (
-                f"artifacts/audio/{self.session_id}_english.mp3"
-            )
+            audio_path = f"artifacts/audio/{self.session_id}_english.mp3"
 
             self.retry_operation(
                 lambda: download_artifact(
@@ -392,14 +381,7 @@ class Pipeline:
                 "Downloading English audio"
             )
 
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio"
-        ):
-
+        if "image" not in completed_stages:
             logger.info("Image not completed. Generating image.")
 
             image_path = self.retry_operation(
@@ -409,6 +391,7 @@ class Pipeline:
 
             self.retry_operation(
                 lambda: upload_artifact(
+                    None,
                     image_path,
                     f"runs/{self.session_id}/english/image.png"
                 ),
@@ -416,19 +399,13 @@ class Pipeline:
             )
 
             state["stage"] = "image"
-            stage = "image"
-
+            completed_stages.append("image")
             write_state(state)
 
         else:
+            logger.info("Image already completed. Downloading image.")
 
-            logger.info(
-                "Image already completed. Downloading image."
-            )
-
-            image_path = (
-                f"artifacts/images/{self.session_id}.png"
-            )
+            image_path = f"artifacts/images/{self.session_id}.png"
 
             self.retry_operation(
                 lambda: download_artifact(
@@ -438,18 +415,8 @@ class Pipeline:
                 "Downloading image"
             )
 
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio",
-            "image"
-        ):
-
-            logger.info(
-                "English video not completed. Generating video."
-            )
+        if "english_video" not in completed_stages:
+            logger.info("English video not completed. Generating video.")
 
             video_path = self.retry_operation(
                 lambda: self.generate_video(
@@ -462,26 +429,21 @@ class Pipeline:
 
             self.retry_operation(
                 lambda: upload_artifact(
+                    None,
                     video_path,
                     f"runs/{self.session_id}/english/video.mp4"
                 ),
-                "Uploading English video artifact"
+                "Uploading English video"
             )
 
             state["stage"] = "english_video"
-            stage = "english_video"
-
+            completed_stages.append("english_video")
             write_state(state)
 
         else:
+            logger.info("English video already completed. Downloading video.")
 
-            logger.info(
-                "English video already completed. Downloading video."
-            )
-
-            video_path = (
-                f"artifacts/videos/{self.session_id}_english.mp4"
-            )
+            video_path = f"artifacts/videos/{self.session_id}_english.mp4"
 
             self.retry_operation(
                 lambda: download_artifact(
@@ -491,19 +453,8 @@ class Pipeline:
                 "Downloading English video"
             )
 
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio",
-            "image",
-            "english_video"
-        ):
-
-            logger.info(
-                "English video not uploaded. Uploading."
-            )
+        if "english_upload" not in completed_stages:
+            logger.info("English video not uploaded. Uploading.")
 
             self.retry_operation(
                 lambda: self.upload_video(
@@ -515,28 +466,14 @@ class Pipeline:
             )
 
             state["stage"] = "english_upload"
-            stage = "english_upload"
-
+            completed_stages.append("english_upload")
             write_state(state)
 
         else:
-
             logger.info("English video already uploaded.")
 
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio",
-            "image",
-            "english_video",
-            "english_upload"
-        ):
-
-            logger.info(
-                "Hindi script not completed. Generating script."
-            )
+        if "hindi_script" not in completed_stages:
+            logger.info("Hindi script not completed. Generating script.")
 
             hindi_script = self.retry_operation(
                 lambda: self.generate_script(
@@ -547,49 +484,38 @@ class Pipeline:
                 "Hindi script generation"
             )
 
+            hindi_script_path = f"artifacts/{self.session_id}_hindi_script.json"
+
             self.retry_operation(
-                lambda: save_script(
-                    hindi_script,
-                    self.session_id,
-                    "Hindi"
+                lambda: upload_artifact(
+                    dict(hindi_script),
+                    hindi_script_path,
+                    f"runs/{self.session_id}/hindi/script.json"
                 ),
-                "Saving Hindi script"
+                "Uploading Hindi script"
             )
 
             state["stage"] = "hindi_script"
-            stage = "hindi_script"
-
+            completed_stages.append("hindi_script")
             write_state(state)
 
         else:
+            logger.info("Hindi script already completed. Loading script.")
 
-            logger.info(
-                "Hindi script already completed. Loading script."
+            hindi_script_path = f"artifacts/{self.session_id}_hindi_script.json"
+
+            hindi_script = ConfigBox(
+                self.retry_operation(
+                    lambda: download_artifact(
+                        f"runs/{self.session_id}/hindi/script.json",
+                        hindi_script_path
+                    ),
+                    "Downloading Hindi script"
+                )
             )
 
-            hindi_script = self.retry_operation(
-                lambda: load_script(
-                    self.session_id,
-                    "Hindi"
-                ),
-                "Loading Hindi script"
-            )
-
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio",
-            "image",
-            "english_video",
-            "english_upload",
-            "hindi_script"
-        ):
-
-            logger.info(
-                "Hindi audio not completed. Generating audio."
-            )
+        if "hindi_audio" not in completed_stages:
+            logger.info("Hindi audio not completed. Generating audio.")
 
             hindi_audio_path = self.retry_operation(
                 lambda: self.generate_audio(
@@ -601,6 +527,7 @@ class Pipeline:
 
             self.retry_operation(
                 lambda: upload_artifact(
+                    None,
                     hindi_audio_path,
                     f"runs/{self.session_id}/hindi/audio.mp3"
                 ),
@@ -608,19 +535,13 @@ class Pipeline:
             )
 
             state["stage"] = "hindi_audio"
-            stage = "hindi_audio"
-
+            completed_stages.append("hindi_audio")
             write_state(state)
 
         else:
+            logger.info("Hindi audio already completed. Downloading audio.")
 
-            logger.info(
-                "Hindi audio already completed. Downloading audio."
-            )
-
-            hindi_audio_path = (
-                f"artifacts/audio/{self.session_id}_hindi.mp3"
-            )
+            hindi_audio_path = f"artifacts/audio/{self.session_id}_hindi.mp3"
 
             self.retry_operation(
                 lambda: download_artifact(
@@ -630,22 +551,8 @@ class Pipeline:
                 "Downloading Hindi audio"
             )
 
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio",
-            "image",
-            "english_video",
-            "english_upload",
-            "hindi_script",
-            "hindi_audio"
-        ):
-
-            logger.info(
-                "Hindi video not completed. Generating video."
-            )
+        if "hindi_video" not in completed_stages:
+            logger.info("Hindi video not completed. Generating video.")
 
             hindi_video_path = self.retry_operation(
                 lambda: self.generate_video(
@@ -658,26 +565,21 @@ class Pipeline:
 
             self.retry_operation(
                 lambda: upload_artifact(
+                    None,
                     hindi_video_path,
                     f"runs/{self.session_id}/hindi/video.mp4"
                 ),
-                "Uploading Hindi video artifact"
+                "Uploading Hindi video"
             )
 
             state["stage"] = "hindi_video"
-            stage = "hindi_video"
-
+            completed_stages.append("hindi_video")
             write_state(state)
 
         else:
+            logger.info("Hindi video already completed. Downloading video.")
 
-            logger.info(
-                "Hindi video already completed. Downloading video."
-            )
-
-            hindi_video_path = (
-                f"artifacts/videos/{self.session_id}_hindi.mp4"
-            )
+            hindi_video_path = f"artifacts/videos/{self.session_id}_hindi.mp4"
 
             self.retry_operation(
                 lambda: download_artifact(
@@ -687,23 +589,8 @@ class Pipeline:
                 "Downloading Hindi video"
             )
 
-
-        if stage in (
-            None,
-            "news",
-            "english_script",
-            "english_audio",
-            "image",
-            "english_video",
-            "english_upload",
-            "hindi_script",
-            "hindi_audio",
-            "hindi_video"
-        ):
-
-            logger.info(
-                "Hindi video not uploaded. Uploading."
-            )
+        if "hindi_upload" not in completed_stages:
+            logger.info("Hindi video not uploaded. Uploading.")
 
             self.retry_operation(
                 lambda: self.upload_video(
@@ -715,15 +602,12 @@ class Pipeline:
             )
 
             state["stage"] = "hindi_upload"
-            stage = "hindi_upload"
-
+            completed_stages.append("hindi_upload")
             write_state(state)
 
         else:
-
             logger.info("Hindi video already uploaded.")
 
-        
         state["stage"] = "complete"
         state["session_id"] = None
 
