@@ -131,7 +131,7 @@ def download_artifact(blob_path, local_path):
 
         if local_path.endswith(".json"):
             with open(local_path, "r") as file:
-                return ConfigBox(json.load(file))
+                return json.load(file)
 
         logger.info(
             "Artifact downloaded successfully: %s",
