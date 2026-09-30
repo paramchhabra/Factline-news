@@ -170,10 +170,13 @@ def extract_article_content(url):
         decoded_url = newurl.get("decoded_url")
 
         response = requests.get(
-            decoded_url,
+            url,
             headers=get_browser_headers(),
             timeout=10
         )
+
+        logger.info("Google News status: %s", response.status_code)
+        logger.info("Google News response: %s", response.text[:1000])
         response.raise_for_status()
 
         doc = Document(response.text)
