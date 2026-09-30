@@ -36,7 +36,6 @@ class ImageGen:
             )
 
             data = response.json()
-            print(self.config.prompt,data)
             image = base64.b64decode(data["artifacts"][0]["base64"])
             
             return image
