@@ -60,15 +60,12 @@ class Pipeline:
 
                 news_data = news_component.get_news_data()
 
-                if not news_data:
-                    raise RuntimeError("News fetching failed.")
-
                 return news_data
 
-            except Exception:
+            except Exception as e:
                 logger.exception(
-                    "News fetching failed with max_chars=%d",
-                    max_chars
+                    "News fetching failed with error=%s",
+                    e
                 )
 
                 if attempt == 3:
