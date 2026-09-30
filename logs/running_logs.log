@@ -258,3 +258,161 @@
 [2026-09-20 12:40:04,495:INFO:pipeline:Pipeline completed successfully for topic: india]
 [2026-09-20 12:40:04,495:INFO:helper:Writing pipeline state to GCS]
 [2026-09-20 12:40:07,825:INFO:helper:Pipeline state written successfully: {'current_topic_index': 1, 'session_id': None, 'stage': 'complete'}]
+[2026-09-30 07:43:04,170:INFO:helper:Reading application configuration]
+[2026-09-30 07:43:04,173:INFO:helper:Reading pipeline state from GCS]
+[2026-09-30 07:43:08,211:INFO:helper:Pipeline state loaded successfully]
+[2026-09-30 07:43:08,211:INFO:helper:Reading application configuration]
+[2026-09-30 07:43:08,213:INFO:pipeline:Starting pipeline | topic=india+politics | session_id=260928003022 | stage=english_audio]
+[2026-09-30 07:43:08,213:INFO:pipeline:News already completed. Loading news.]
+[2026-09-30 07:43:08,213:INFO:helper:Downloading artifact from GCS: runs/260928003022/news.json]
+[2026-09-30 07:43:11,154:INFO:pipeline:English script already completed. Loading script.]
+[2026-09-30 07:43:11,154:INFO:helper:Downloading artifact from GCS: runs/260928003022/english/script.json]
+[2026-09-30 07:43:14,482:INFO:pipeline:English audio already completed. Downloading audio.]
+[2026-09-30 07:43:14,482:INFO:helper:Downloading artifact from GCS: runs/260928003022/english/audio.mp3]
+[2026-09-30 07:43:17,576:INFO:helper:Artifact downloaded successfully: runs/260928003022/english/audio.mp3]
+[2026-09-30 07:43:17,576:INFO:pipeline:Image not completed. Generating image.]
+[2026-09-30 07:43:17,577:INFO:pipeline:Generating image]
+[2026-09-30 07:43:20,343:ERROR:image_generation:Failed to create Image due to following error : 'artifacts']
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:43:20,344:ERROR:pipeline:Image generation failed. Attempt 1/3]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 28, in retry_operation
+    return operation()
+           ^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 388, in <lambda>
+    lambda: self.generate_image(script),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 155, in generate_image
+    image_data = image_component.create_bg_img()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:43:20,346:INFO:pipeline:Generating image]
+[2026-09-30 07:43:21,630:ERROR:image_generation:Failed to create Image due to following error : 'artifacts']
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:43:21,630:ERROR:pipeline:Image generation failed. Attempt 2/3]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 28, in retry_operation
+    return operation()
+           ^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 388, in <lambda>
+    lambda: self.generate_image(script),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 155, in generate_image
+    image_data = image_component.create_bg_img()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:43:21,632:INFO:pipeline:Generating image]
+[2026-09-30 07:43:23,406:ERROR:image_generation:Failed to create Image due to following error : 'artifacts']
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:43:23,406:ERROR:pipeline:Image generation failed. Attempt 3/3]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 28, in retry_operation
+    return operation()
+           ^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 388, in <lambda>
+    lambda: self.generate_image(script),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 155, in generate_image
+    image_data = image_component.create_bg_img()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:44:03,219:INFO:helper:Reading application configuration]
+[2026-09-30 07:44:03,221:INFO:helper:Reading pipeline state from GCS]
+[2026-09-30 07:44:06,182:INFO:helper:Pipeline state loaded successfully]
+[2026-09-30 07:44:06,182:INFO:helper:Reading application configuration]
+[2026-09-30 07:44:06,183:INFO:pipeline:Starting pipeline | topic=india+politics | session_id=260928003022 | stage=english_audio]
+[2026-09-30 07:44:06,184:INFO:pipeline:News already completed. Loading news.]
+[2026-09-30 07:44:06,184:INFO:helper:Downloading artifact from GCS: runs/260928003022/news.json]
+[2026-09-30 07:44:09,140:INFO:pipeline:English script already completed. Loading script.]
+[2026-09-30 07:44:09,140:INFO:helper:Downloading artifact from GCS: runs/260928003022/english/script.json]
+[2026-09-30 07:44:12,044:INFO:pipeline:English audio already completed. Downloading audio.]
+[2026-09-30 07:44:12,045:INFO:helper:Downloading artifact from GCS: runs/260928003022/english/audio.mp3]
+[2026-09-30 07:44:15,126:INFO:helper:Artifact downloaded successfully: runs/260928003022/english/audio.mp3]
+[2026-09-30 07:44:15,126:INFO:pipeline:Image not completed. Generating image.]
+[2026-09-30 07:44:15,127:INFO:pipeline:Generating image]
+[2026-09-30 07:44:16,470:ERROR:image_generation:Failed to create Image due to following error : 'artifacts']
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:44:16,470:ERROR:pipeline:Image generation failed. Attempt 1/3]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 28, in retry_operation
+    return operation()
+           ^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 388, in <lambda>
+    lambda: self.generate_image(script),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 155, in generate_image
+    image_data = image_component.create_bg_img()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:44:16,472:INFO:pipeline:Generating image]
+[2026-09-30 07:44:17,737:ERROR:image_generation:Failed to create Image due to following error : 'artifacts']
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:44:17,738:ERROR:pipeline:Image generation failed. Attempt 2/3]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 28, in retry_operation
+    return operation()
+           ^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 388, in <lambda>
+    lambda: self.generate_image(script),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 155, in generate_image
+    image_data = image_component.create_bg_img()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:44:17,740:INFO:pipeline:Generating image]
+[2026-09-30 07:44:18,956:ERROR:image_generation:Failed to create Image due to following error : 'artifacts']
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'
+[2026-09-30 07:44:18,957:ERROR:pipeline:Image generation failed. Attempt 3/3]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 28, in retry_operation
+    return operation()
+           ^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 388, in <lambda>
+    lambda: self.generate_image(script),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 155, in generate_image
+    image_data = image_component.create_bg_img()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\image_generation.py", line 40, in create_bg_img
+    image = base64.b64decode(data["artifacts"][0]["base64"])
+                             ~~~~^^^^^^^^^^^^^
+KeyError: 'artifacts'

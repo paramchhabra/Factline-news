@@ -66,11 +66,11 @@ class SystemPrompt():
 
             "script": "[Your short {language} script goes here]",
             "mood": "[Your mood description goes here, e.g., 'Speak in a Professional and sad tone']"
-            "prompt": "[Your prompt for background image generation, always in english]"
+            "prompt": "[Your prompt for background image generation, always in english, should be safe to generate from the guardrailing pov, do not ask it to generate weapons or explicit content]"
             }}
 
             Guidelines:
-            - Begin the script with today's date in this format: "It is [todaysdate] and you are watching FactLine." Replace [todaysdate] with {date} in plain {language}.
+            - Always have a mention of the todays date - {date} and welcome users to "Factline" at the start of the video in plain {language}.
             - Maintain the tone and factual relevance of the original news transcript(s). Do NOT add any opinions or additional facts.
             - If there are multiple articles or parts, summarize them in logical order, starting from the most recent one.
             - Use simple, engaging, and clear language suitable for a general audience. Keep sentences concise and avoid unnecessary elaboration to ensure the script fits within a 60-second video.
