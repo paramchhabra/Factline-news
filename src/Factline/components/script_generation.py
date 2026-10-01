@@ -10,7 +10,7 @@ class ScriptGen:
     def news_script(self):
         try:
             system_prompt = SystemPrompt.script_prompt(self.config.topic, self.config.language, self.config.transcript)
-            script = CHAT_MODEL.with_structured_output(NewsScript).invoke([("system",system_prompt),("user","")])
+            script = CHAT_MODEL.with_structured_output(NewsScript,method="json_schema").invoke([("system",system_prompt),("user","")])
             return ConfigBox(script.model_dump())
         except Exception as e:
             logger.exception("Failed to write news script due to the following error : %s",e)

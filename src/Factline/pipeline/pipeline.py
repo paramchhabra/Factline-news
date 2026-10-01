@@ -60,6 +60,9 @@ class Pipeline:
 
                 news_data = news_component.get_news_data()
 
+                if not news_data:
+                    raise ValueError("News Data came through empty") 
+
                 return news_data
 
             except Exception as e:
