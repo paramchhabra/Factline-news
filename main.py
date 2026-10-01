@@ -37,7 +37,7 @@ def main():
         "Reading pipeline state")
 
     topics = config.topics
-    topic_index = state["current_topic_index"]
+    topic_index = state["current_topic_index"] % len(topics)
 
     topic = topics[topic_index]
     
