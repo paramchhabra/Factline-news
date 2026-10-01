@@ -50,7 +50,7 @@ class NewsData:
 
             data = response.json()
             listnews = data.get("articles", [])
-
+            logger.info("Number of articles fetched: %d",len(listnews))
             if not listnews:
                 logger.info("No news items found.")
                 raise ValueError("No news items found")
