@@ -1,6 +1,6 @@
 import os
 import requests
-from Factline.utils.helper import get_browser_headers, extract_article_content, get_topic_data
+from Factline.utils.helper import extract_article_content, get_topic_data
 from Factline import logger
 
 class NewsData:

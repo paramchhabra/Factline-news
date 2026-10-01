@@ -38,7 +38,7 @@ class SystemPrompt():
             Your output should be:
             mumbai monsoon rainfall alert news
 
-            Final Output: Just the news search query string (no explanations).
+            Final Output: Just the news search query string WITH SPACES IN BETWEEN AND NORMAL ENGLISH WORDS (no explanations).
 
             Only output 1 result."""
 
