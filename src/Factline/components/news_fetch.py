@@ -1,10 +1,10 @@
+import os
 import requests
-from bs4 import BeautifulSoup
-from Factline.utils.helper import get_browser_headers,extract_article_content,get_topic_data
+from Factline.utils.helper import get_browser_headers, extract_article_content, get_topic_data
 from Factline import logger
 
 class NewsData:
-    def __init__(self,config, topic,max_chars):
+    def __init__(self, config, topic, max_chars):
         self.config = config
         self.topic = topic
         self.max_chars = max_chars
@@ -14,24 +14,43 @@ class NewsData:
             query = get_topic_data(self.topic)
         except Exception as e:
             for i in range(3):
-                logger.info("Topic Data retrieval Failed due to the following error: %s, retrying %d",e,i)
-                try: 
+                logger.info(
+                    "Topic Data retrieval Failed due to the following error: %s, retrying %d",
+                    e,
+                    i
+                )
+                try:
                     query = get_topic_data(self.topic)
                     break
                 except Exception as e:
                     logger.info("Attempt %d failed: %s", i + 1, e)
                     continue
             else:
-                logger.exception("Topic Data retrieval Failed due to the following error: %s",e)
+                logger.exception(
+                    "Topic Data retrieval Failed due to the following error: %s",
+                    e
+                )
+                raise
 
         try:
-            url = f"https://news.google.com/rss/search?q={query}"
+            response = requests.get(
+                "https://gnews.io/api/v4/search",
+                params={
+                    "q": query,
+                    "lang": "en",
+                    "country": "in",
+                    "max": 10,
+                    "sortby": "publishedAt",
+                    "apikey": os.getenv("GNEWS_API_KEY")
+                },
+                timeout=10
+            )
 
-            response = requests.get(url=url, headers=get_browser_headers())
             response.raise_for_status()
 
-            soup = BeautifulSoup(response.text, 'xml')
-            listnews = soup.find_all('item')[:10]
+            data = response.json()
+            listnews = data.get("articles", [])
+
             if not listnews:
                 logger.info("No news items found.")
                 raise ValueError("No news items found")
@@ -41,12 +60,14 @@ class NewsData:
             total_chars = 0
 
             for i in listnews:
-                title = i.find('title').text
-                link = i.find('link').text
+                title = i.get("title", "")
+                link = i.get("url", "")
 
                 content = extract_article_content(link)
+
                 if not content:
                     continue
+
                 remaining = mc - total_chars
 
                 if remaining <= 0:
@@ -57,17 +78,18 @@ class NewsData:
                 newslist.append({
                     "Title": title,
                     "Content": content,
-                    "Published_On": i.find('pubDate').text,
-                    "Source": i.find('source').text if i.find('source') else "Unknown"
+                    "Published_On": i.get("publishedAt", ""),
+                    "Source": i.get("source", {}).get("name", "Unknown")
                 })
 
                 total_chars += len(content)
 
             logger.info("Data Provided")
             return newslist
+
         except Exception as e:
-            logger.exception("Failed to extract article content due to following error: %s",e)
+            logger.exception(
+                "Failed to extract article content due to following error: %s",
+                e
+            )
             raise
-
-        
-

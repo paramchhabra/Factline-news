@@ -601,3 +601,737 @@ requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.
 [2026-09-30 08:42:29,258:INFO:pipeline:Pipeline completed successfully for topic: global]
 [2026-09-30 08:42:29,258:INFO:helper:Writing pipeline state to GCS]
 [2026-09-30 08:42:32,366:INFO:helper:Pipeline state written successfully: {'current_topic_index': 3, 'session_id': None, 'stage': None}]
+[2026-10-01 07:08:04,866:INFO:helper:Reading application configuration]
+[2026-10-01 07:08:04,869:INFO:helper:Reading pipeline state from GCS]
+[2026-10-01 07:08:08,614:INFO:helper:Pipeline state loaded successfully]
+[2026-10-01 07:08:08,614:INFO:helper:Reading application configuration]
+[2026-10-01 07:08:08,616:INFO:pipeline:Starting pipeline | topic=global | session_id=261001070808 | stage=None]
+[2026-10-01 07:08:08,616:INFO:pipeline:News stage not completed. Fetching news.]
+[2026-10-01 07:08:08,616:INFO:pipeline:Fetching news for topic: global]
+[2026-10-01 07:08:08,617:INFO:pipeline:Fetching news with max_chars=30000. Attempt 1/3]
+[2026-10-01 07:08:10,858:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"]
+[2026-10-01 07:08:10,859:ERROR:helper:Failed to get topic data with exception: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+200+2032+news'}}]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+200+2032+news'}}
+[2026-10-01 07:08:10,866:INFO:news_fetch:Topic Data retrieval Failed due to the following error: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+200+2032+news'}}, retrying 0]
+[2026-10-01 07:08:12,863:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"]
+[2026-10-01 07:08:12,864:ERROR:helper:Failed to get topic data with exception: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}
+[2026-10-01 07:08:12,865:INFO:news_fetch:Attempt 1 failed: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}]
+[2026-10-01 07:08:12,867:ERROR:pipeline:News fetching failed with error=cannot access local variable 'e' where it is not associated with a value]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 14, in get_news_data
+    query = get_topic_data(self.topic)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+200+2032+news'}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 19, in get_news_data
+    e,
+    ^
+UnboundLocalError: cannot access local variable 'e' where it is not associated with a value
+[2026-10-01 07:08:12,869:INFO:pipeline:Fetching news with max_chars=20000. Attempt 2/3]
+[2026-10-01 07:08:15,139:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"]
+[2026-10-01 07:08:15,140:ERROR:helper:Failed to get topic data with exception: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}
+[2026-10-01 07:08:15,141:INFO:news_fetch:Topic Data retrieval Failed due to the following error: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}, retrying 0]
+[2026-10-01 07:08:17,327:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"]
+[2026-10-01 07:08:17,328:ERROR:helper:Failed to get topic data with exception: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}
+[2026-10-01 07:08:17,329:INFO:news_fetch:Attempt 1 failed: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}]
+[2026-10-01 07:08:17,330:ERROR:pipeline:News fetching failed with error=cannot access local variable 'e' where it is not associated with a value]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 14, in get_news_data
+    query = get_topic_data(self.topic)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 19, in get_news_data
+    e,
+    ^
+UnboundLocalError: cannot access local variable 'e' where it is not associated with a value
+[2026-10-01 07:08:17,333:INFO:pipeline:Fetching news with max_chars=10000. Attempt 3/3]
+[2026-10-01 07:08:19,444:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"]
+[2026-10-01 07:08:19,445:ERROR:helper:Failed to get topic data with exception: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}
+[2026-10-01 07:08:19,446:INFO:news_fetch:Topic Data retrieval Failed due to the following error: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}, retrying 0]
+[2026-10-01 07:08:21,468:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"]
+[2026-10-01 07:08:21,469:ERROR:helper:Failed to get topic data with exception: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+2032+news'}}]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+2032+news'}}
+[2026-10-01 07:08:21,470:INFO:news_fetch:Attempt 1 failed: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+2032+news'}}]
+[2026-10-01 07:08:21,471:ERROR:pipeline:News fetching failed with error=cannot access local variable 'e' where it is not associated with a value]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 14, in get_news_data
+    query = get_topic_data(self.topic)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 226, in get_topic_data
+    response = structured_model.invoke(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3442, in invoke
+    input_ = context.run(step.invoke, input_, config, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6002, in invoke
+    return self.bound.invoke(
+           ^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1865, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1672, in generate
+    self._generate_with_cache(
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 2010, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\langchain_groq\chat_models.py", line 627, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: Error code: 400 - {'error': {'message': 'Tool choice is required, but model did not call a tool', 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': 'coimbatore+gcc+talent+report+news'}}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 19, in get_news_data
+    e,
+    ^
+UnboundLocalError: cannot access local variable 'e' where it is not associated with a value
+[2026-10-01 07:09:04,828:INFO:helper:Reading application configuration]
+[2026-10-01 07:09:04,830:INFO:helper:Reading pipeline state from GCS]
+[2026-10-01 07:09:07,767:INFO:helper:Pipeline state loaded successfully]
+[2026-10-01 07:09:07,768:INFO:helper:Reading application configuration]
+[2026-10-01 07:09:07,769:INFO:pipeline:Starting pipeline | topic=global | session_id=261001070907 | stage=None]
+[2026-10-01 07:09:07,769:INFO:pipeline:News stage not completed. Fetching news.]
+[2026-10-01 07:09:07,769:INFO:pipeline:Fetching news for topic: global]
+[2026-10-01 07:09:07,770:INFO:pipeline:Fetching news with max_chars=30000. Attempt 1/3]
+[2026-10-01 07:09:10,346:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:09:11,316:ERROR:news_fetch:Failed to extract article content due to following error: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 49, in get_news_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:11,327:ERROR:pipeline:News fetching failed with error=400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 49, in get_news_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:11,328:INFO:pipeline:Fetching news with max_chars=20000. Attempt 2/3]
+[2026-10-01 07:09:12,205:ERROR:helper:Failed to get topic data with exception: 429 Client Error: Too Many Requests for url: https://gnews.io/api/v4/search?q=global+news&lang=en&country=in&max=10&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 209, in get_topic_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://gnews.io/api/v4/search?q=global+news&lang=en&country=in&max=10&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:12,206:INFO:news_fetch:Topic Data retrieval Failed due to the following error: 429 Client Error: Too Many Requests for url: https://gnews.io/api/v4/search?q=global+news&lang=en&country=in&max=10&apikey=57c370dae25bb59a8c263af7bd61df44, retrying 0]
+[2026-10-01 07:09:14,790:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:09:15,748:ERROR:news_fetch:Failed to extract article content due to following error: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Btalent%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 49, in get_news_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Btalent%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:15,749:ERROR:pipeline:News fetching failed with error=400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Btalent%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 49, in get_news_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2Bgcc%2B200%2B2032%2Btalent%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:15,750:INFO:pipeline:Fetching news with max_chars=10000. Attempt 3/3]
+[2026-10-01 07:09:16,626:ERROR:helper:Failed to get topic data with exception: 429 Client Error: Too Many Requests for url: https://gnews.io/api/v4/search?q=global+news&lang=en&country=in&max=10&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 209, in get_topic_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://gnews.io/api/v4/search?q=global+news&lang=en&country=in&max=10&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:16,627:INFO:news_fetch:Topic Data retrieval Failed due to the following error: 429 Client Error: Too Many Requests for url: https://gnews.io/api/v4/search?q=global+news&lang=en&country=in&max=10&apikey=57c370dae25bb59a8c263af7bd61df44, retrying 0]
+[2026-10-01 07:09:18,930:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:09:19,800:ERROR:news_fetch:Failed to extract article content due to following error: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2B200%2Bgcc%2Btalent%2Breport%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 49, in get_news_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2B200%2Bgcc%2Btalent%2Breport%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:09:19,800:ERROR:pipeline:News fetching failed with error=400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2B200%2Bgcc%2Btalent%2Breport%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 49, in get_news_data
+    response.raise_for_status()
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\requests\models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://gnews.io/api/v4/search?q=coimbatore%2B200%2Bgcc%2Btalent%2Breport%2Bnews&lang=en&country=in&max=10&sortby=publishedAt&apikey=57c370dae25bb59a8c263af7bd61df44
+[2026-10-01 07:12:24,823:INFO:helper:Reading application configuration]
+[2026-10-01 07:12:24,825:INFO:helper:Reading pipeline state from GCS]
+[2026-10-01 07:12:28,071:INFO:helper:Pipeline state loaded successfully]
+[2026-10-01 07:12:28,072:INFO:helper:Reading application configuration]
+[2026-10-01 07:12:28,073:INFO:pipeline:Starting pipeline | topic=global | session_id=261001071228 | stage=None]
+[2026-10-01 07:12:28,073:INFO:pipeline:News stage not completed. Fetching news.]
+[2026-10-01 07:12:28,073:INFO:pipeline:Fetching news for topic: global]
+[2026-10-01 07:12:28,074:INFO:pipeline:Fetching news with max_chars=30000. Attempt 1/3]
+[2026-10-01 07:12:30,392:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:12:30,406:ERROR:helper:Failed to get topic data with exception: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+[2026-10-01 07:12:30,412:INFO:news_fetch:Topic Data retrieval Failed due to the following error: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error, retrying 0]
+[2026-10-01 07:12:32,762:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:12:32,764:ERROR:helper:Failed to get topic data with exception: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+[2026-10-01 07:12:32,764:INFO:news_fetch:Attempt 1 failed: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+[2026-10-01 07:12:32,765:ERROR:pipeline:News fetching failed with error=cannot access local variable 'e' where it is not associated with a value]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 14, in get_news_data
+    query = get_topic_data(self.topic)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 19, in get_news_data
+    e,
+    ^
+UnboundLocalError: cannot access local variable 'e' where it is not associated with a value
+[2026-10-01 07:12:32,767:INFO:pipeline:Fetching news with max_chars=20000. Attempt 2/3]
+[2026-10-01 07:12:35,169:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:12:35,172:ERROR:helper:Failed to get topic data with exception: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+[2026-10-01 07:12:35,172:INFO:news_fetch:Topic Data retrieval Failed due to the following error: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error, retrying 0]
+[2026-10-01 07:12:37,491:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:12:37,493:ERROR:helper:Failed to get topic data with exception: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+[2026-10-01 07:12:37,493:INFO:news_fetch:Attempt 1 failed: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+[2026-10-01 07:12:37,494:ERROR:pipeline:News fetching failed with error=cannot access local variable 'e' where it is not associated with a value]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 14, in get_news_data
+    query = get_topic_data(self.topic)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 19, in get_news_data
+    e,
+    ^
+UnboundLocalError: cannot access local variable 'e' where it is not associated with a value
+[2026-10-01 07:12:37,494:INFO:pipeline:Fetching news with max_chars=10000. Attempt 3/3]
+[2026-10-01 07:12:39,863:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:12:39,865:ERROR:helper:Failed to get topic data with exception: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+[2026-10-01 07:12:39,866:INFO:news_fetch:Topic Data retrieval Failed due to the following error: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error, retrying 0]
+[2026-10-01 07:12:42,170:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:12:42,172:ERROR:helper:Failed to get topic data with exception: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+[2026-10-01 07:12:42,172:INFO:news_fetch:Attempt 1 failed: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 200 2032 talent report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error]
+[2026-10-01 07:12:42,172:ERROR:pipeline:News fetching failed with error=cannot access local variable 'e' where it is not associated with a value]
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 14, in get_news_data
+    query = get_topic_data(self.topic)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\utils\helper.py", line 238, in get_topic_data
+    return NewsQuery.model_validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\param\Desktop\news_new\.venv\Lib\site-packages\pydantic\main.py", line 782, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for NewsQuery
+query
+  Value error, LLM Generated output without + [type=value_error, input_value='coimbatore gccs 2032 report news', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\param\Desktop\news_new\src\Factline\pipeline\pipeline.py", line 61, in fetch_news
+    news_data = news_component.get_news_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\param\Desktop\news_new\src\Factline\components\news_fetch.py", line 19, in get_news_data
+    e,
+    ^
+UnboundLocalError: cannot access local variable 'e' where it is not associated with a value
+[2026-10-01 07:14:29,747:INFO:helper:Reading application configuration]
+[2026-10-01 07:14:29,749:INFO:helper:Reading pipeline state from GCS]
+[2026-10-01 07:14:33,115:INFO:helper:Pipeline state loaded successfully]
+[2026-10-01 07:14:33,115:INFO:helper:Reading application configuration]
+[2026-10-01 07:14:33,117:INFO:pipeline:Starting pipeline | topic=global | session_id=261001071433 | stage=None]
+[2026-10-01 07:14:33,117:INFO:pipeline:News stage not completed. Fetching news.]
+[2026-10-01 07:14:33,117:INFO:pipeline:Fetching news for topic: global]
+[2026-10-01 07:14:33,117:INFO:pipeline:Fetching news with max_chars=30000. Attempt 1/3]
+[2026-10-01 07:14:35,268:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:14:37,553:INFO:helper:Article status: 200]
+[2026-10-01 07:14:37,896:INFO:helper:Article status: 200]
+[2026-10-01 07:14:37,905:INFO:news_fetch:Data Provided]
+[2026-10-01 07:14:37,905:INFO:helper:Uploading artifact to GCS: runs/261001071433/news.json]
+[2026-10-01 07:14:40,966:INFO:helper:Artifact uploaded successfully: runs/261001071433/news.json]
+[2026-10-01 07:14:40,966:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:14:43,963:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'news'}]
+[2026-10-01 07:14:43,963:INFO:pipeline:English script not completed. Generating script.]
+[2026-10-01 07:14:43,963:INFO:pipeline:Generating English script for global]
+[2026-10-01 07:14:45,514:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:14:45,517:INFO:helper:Uploading artifact to GCS: runs/261001071433/english/script.json]
+[2026-10-01 07:14:48,948:INFO:helper:Artifact uploaded successfully: runs/261001071433/english/script.json]
+[2026-10-01 07:14:48,948:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:14:52,222:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'english_script'}]
+[2026-10-01 07:14:52,222:INFO:pipeline:English audio not completed. Generating audio.]
+[2026-10-01 07:14:52,223:INFO:pipeline:Generating English audio]
+[2026-10-01 07:14:57,884:INFO:_client:HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"]
+[2026-10-01 07:14:59,551:INFO:audio_generation:OpenAI audio created]
+[2026-10-01 07:14:59,561:INFO:helper:Uploading artifact to GCS: runs/261001071433/english/audio.mp3]
+[2026-10-01 07:15:02,747:INFO:helper:Artifact uploaded successfully: runs/261001071433/english/audio.mp3]
+[2026-10-01 07:15:02,747:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:15:05,702:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'english_audio'}]
+[2026-10-01 07:15:05,702:INFO:pipeline:Image not completed. Generating image.]
+[2026-10-01 07:15:05,703:INFO:pipeline:Generating image]
+[2026-10-01 07:15:12,250:INFO:helper:Uploading artifact to GCS: runs/261001071433/english/image.png]
+[2026-10-01 07:15:15,433:INFO:helper:Artifact uploaded successfully: runs/261001071433/english/image.png]
+[2026-10-01 07:15:15,434:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:15:18,626:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'image'}]
+[2026-10-01 07:15:18,626:INFO:pipeline:English video not completed. Generating video.]
+[2026-10-01 07:15:18,626:INFO:pipeline:Generating English video]
+[2026-10-01 07:16:32,691:INFO:helper:Uploading artifact to GCS: runs/261001071433/english/video.mp4]
+[2026-10-01 07:16:36,053:INFO:helper:Artifact uploaded successfully: runs/261001071433/english/video.mp4]
+[2026-10-01 07:16:36,053:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:16:39,214:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'english_video'}]
+[2026-10-01 07:16:39,214:INFO:pipeline:English video not uploaded. Uploading.]
+[2026-10-01 07:16:39,214:INFO:pipeline:Uploading English video]
+[2026-10-01 07:16:39,650:INFO:__init__:file_cache is only supported with oauth2client<4.0.0]
+[2026-10-01 07:16:43,188:INFO:upload:Upload complete! Video ID: ccq6mgNdNko]
+[2026-10-01 07:16:43,264:WARNING:http:Encountered 403 Forbidden with reason "insufficientPermissions"]
+[2026-10-01 07:16:43,265:ERROR:upload:Failed to add video to playlist: <HttpError 403 when requesting https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&alt=json returned "Request had insufficient authentication scopes.". Details: "[{'message': 'Insufficient Permission', 'domain': 'global', 'reason': 'insufficientPermissions'}]">]
+[2026-10-01 07:16:43,265:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:16:46,190:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'english_upload'}]
+[2026-10-01 07:16:46,190:INFO:pipeline:Hindi script not completed. Generating script.]
+[2026-10-01 07:16:46,191:INFO:pipeline:Generating Hindi script for global]
+[2026-10-01 07:16:48,502:INFO:_client:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"]
+[2026-10-01 07:16:48,503:INFO:helper:Uploading artifact to GCS: runs/261001071433/hindi/script.json]
+[2026-10-01 07:16:51,593:INFO:helper:Artifact uploaded successfully: runs/261001071433/hindi/script.json]
+[2026-10-01 07:16:51,593:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:16:54,452:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'hindi_script'}]
+[2026-10-01 07:16:54,452:INFO:pipeline:Hindi audio not completed. Generating audio.]
+[2026-10-01 07:16:54,452:INFO:pipeline:Generating Hindi audio]
+[2026-10-01 07:16:58,005:INFO:_client:HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"]
+[2026-10-01 07:17:00,842:INFO:audio_generation:OpenAI audio created]
+[2026-10-01 07:17:00,843:INFO:helper:Uploading artifact to GCS: runs/261001071433/hindi/audio.mp3]
+[2026-10-01 07:17:03,970:INFO:helper:Artifact uploaded successfully: runs/261001071433/hindi/audio.mp3]
+[2026-10-01 07:17:03,970:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:17:06,963:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'hindi_audio'}]
+[2026-10-01 07:17:06,963:INFO:pipeline:Hindi video not completed. Generating video.]
+[2026-10-01 07:17:06,963:INFO:pipeline:Generating Hindi video]
+[2026-10-01 07:19:38,165:INFO:helper:Uploading artifact to GCS: runs/261001071433/hindi/video.mp4]
+[2026-10-01 07:19:42,706:INFO:helper:Artifact uploaded successfully: runs/261001071433/hindi/video.mp4]
+[2026-10-01 07:19:42,706:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:19:46,374:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'hindi_video'}]
+[2026-10-01 07:19:46,374:INFO:pipeline:Hindi video not uploaded. Uploading.]
+[2026-10-01 07:19:46,374:INFO:pipeline:Uploading Hindi video]
+[2026-10-01 07:19:47,115:INFO:__init__:file_cache is only supported with oauth2client<4.0.0]
+[2026-10-01 07:19:51,551:INFO:upload:Upload complete! Video ID: Vic9hIXeheE]
+[2026-10-01 07:19:51,631:WARNING:http:Encountered 403 Forbidden with reason "insufficientPermissions"]
+[2026-10-01 07:19:51,632:ERROR:upload:Failed to add video to playlist: <HttpError 403 when requesting https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&alt=json returned "Request had insufficient authentication scopes.". Details: "[{'message': 'Insufficient Permission', 'domain': 'global', 'reason': 'insufficientPermissions'}]">]
+[2026-10-01 07:19:51,632:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:19:55,269:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': '261001071433', 'stage': 'hindi_upload'}]
+[2026-10-01 07:19:55,270:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:19:58,894:INFO:helper:Pipeline state written successfully: {'current_topic_index': 2, 'session_id': None, 'stage': 'complete'}]
+[2026-10-01 07:19:58,895:INFO:pipeline:Pipeline completed successfully for topic: global]
+[2026-10-01 07:19:58,895:INFO:helper:Writing pipeline state to GCS]
+[2026-10-01 07:20:02,540:INFO:helper:Pipeline state written successfully: {'current_topic_index': 3, 'session_id': None, 'stage': None}]

@@ -1,8 +1,6 @@
 from readability import Document
-from googlenewsdecoder import gnewsdecoder
 from bs4 import BeautifulSoup
 import requests
-from Factline.config.models import NewsQuery
 from Factline.config.configuration import SystemPrompt, CHAT_MODEL
 import yaml
 from box import ConfigBox
@@ -166,17 +164,14 @@ def get_browser_headers()->dict:
 
 def extract_article_content(url):
     try:
-        newurl = gnewsdecoder(url, interval=10)
-        decoded_url = newurl.get("decoded_url")
-
         response = requests.get(
             url,
             headers=get_browser_headers(),
             timeout=10
         )
 
-        logger.info("Google News status: %s", response.status_code)
-        logger.info("Google News response: %s", response.text[:1000])
+        logger.info("Article status: %s", response.status_code)
+
         response.raise_for_status()
 
         doc = Document(response.text)
@@ -187,28 +182,55 @@ def extract_article_content(url):
         return text_only
 
     except Exception as e:
-        logger.exception("Failed to read content with exception %s, from url %s",e,url)
+        logger.exception(
+            "Failed to read content with exception %s, from url %s",
+            e,
+            url
+        )
         return None
 
 def get_topic_data(topic):
     try:
-        url = f"https://news.google.com/rss/search?q=latest+{topic}+news"
-        response = requests.get(url, headers=get_browser_headers(), timeout=10)
+        api_key = os.getenv("GNEWS_API_KEY")
+
+        response = requests.get(
+            "https://gnews.io/api/v4/search",
+            params={
+                "q": f"{topic} news",
+                "lang": "en",
+                "country": "in",
+                "max": 10,
+                "apikey": api_key
+            },
+            timeout=10
+        )
+
         response.raise_for_status()
 
-        soup = BeautifulSoup(response.text, 'xml')
-        listnews = soup.find_all('item')[:3]
-        title_list = [i.find('title').text for i in listnews]
+        data = response.json()
 
-        response = CHAT_MODEL.invoke([("system",SystemPrompt.news_prompt(topic)),("user",str(title_list))],response_format={
-            "type": "json_schema",
-            "json_schema": {
-                "name": "news_query",
-                "strict": True,
-                "schema": NewsQuery.model_json_schema()
-            }
-        })
-        return NewsQuery.model_validate_json(response.content).query
+        title_list = [
+            article["title"]
+            for article in data.get("articles", [])
+        ][:3]
+
+        if not title_list:
+            raise RuntimeError(
+                f"No news found for topic: {topic}"
+            )
+
+        response = CHAT_MODEL.invoke(
+            [
+                ("system", SystemPrompt.news_prompt(topic)),
+                ("user", str(title_list))
+            ]
+        )
+
+        return response.content
+
     except Exception as e:
-        logger.exception("Failed to get topic data with exception : %s",e)
+        logger.exception(
+            "Failed to get topic data with exception: %s",
+            e
+        )
         raise

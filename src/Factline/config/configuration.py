@@ -18,27 +18,27 @@ class SystemPrompt():
 
             Select the most important, relevant, or engaging news item for the general public based on the topic: {topic}.
 
-            Translate the chosen headline into simple, keyword-based layman language suitable for a Google News RSS query.
+            Translate the chosen headline into simple, keyword-based layman language suitable for a news search query.
 
             Example 1:
             If the headline is:
             "India Surpasses China, Becomes Largest Exporter of iPhones"
             Your output should be:
-            india+china+iphone+news
+            india china iphone news
 
             Example 2 (India-specific):
             If the headline is:
             "PM Modi Launches New National Electric Vehicle Policy to Boost Green Mobility"
             Your output should be:
-            pm+modi+electric+vehicle+policy+news
+            pm+modi electric vehicle policy news
 
             Example 3 (India-specific):
             If the headline is:
             "Mumbai Records Highest Monsoon Rainfall in a Decade, Authorities on Alert"
             Your output should be:
-            mumbai+monsoon+rainfall+alert+news
+            mumbai monsoon rainfall alert news
 
-            Final Output: Just the Google RSS query string (no explanations).
+            Final Output: Just the news search query string (no explanations).
 
             Only output 1 result."""
 
